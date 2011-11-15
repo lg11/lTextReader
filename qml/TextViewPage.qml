@@ -20,12 +20,9 @@ Page {
         /*width : parent.width - 20*/
     /*}*/
     
-    function setFilePath( filePath ) {
-        textView.filePath = filePath
+    function setFileSource( fileSource ) {
+        textView.fileSource = fileSource
     }
-    /*function setFileCodec( fileCodec ) {*/
-        /*textView.fileCodec = fileCodec*/
-    /*}*/
     function reset() {
         textView.positionViewAtBeginning()
     }

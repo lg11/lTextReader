@@ -6,7 +6,7 @@ ListView {
     DocumentGalleryModel {
         id : documentViewModel
         rootType : DocumentGallery.Text
-        properties : [ "fileName", "filePath" ]
+        properties : [ "url", "fileName" ]
     }
     Component {
         id : documentViewDelegate
@@ -28,7 +28,7 @@ ListView {
                 onReleased : {
                     /*console.log( "released" )*/
                     textViewPage.reset()
-                    textViewPage.setFilePath( filePath )
+                    textViewPage.setFileSource( url )
                     window.goToTextViewPage()
                 }
             }

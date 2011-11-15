@@ -8,12 +8,14 @@ class TextViewModelPrivate ;
 class TextViewModel : public QAbstractListModel {
     Q_OBJECT
     Q_PROPERTY( QString filePath READ getFilePath WRITE setFilePath NOTIFY filePathChanged ) 
-    //Q_PROPERTY( QString fileCodec READ getFileCodec WRITE setFileCodec NOTIFY fileCodecChanged ) 
+    Q_PROPERTY( QString fileSource READ getFileSource WRITE setFileSource NOTIFY fileSourceChanged ) 
+    Q_PROPERTY( QString fileCodec READ getFileCodec WRITE setFileCodec NOTIFY fileCodecChanged ) 
     Q_PROPERTY( int count READ getCount NOTIFY countChanged )
 
 signals :
     void filePathChanged( const QString& filePath ) ;
-    //void fileCodecChanged( const QString& fileCodec ) ;
+    void fileSourceChanged( const QString& fileSource ) ;
+    void fileCodecChanged( const QString& fileCodec ) ;
     void countChanged( int count ) ;
     //void itemsChanged() ;
 
@@ -29,8 +31,10 @@ public :
 
     const QString& getFilePath() const ;
     void setFilePath( const QString& filePath ) ;
-    //const QString& getFileCodec() const ;
-    //void setFileCodec( const QString& fileCodec ) ;
+    const QString& getFileSource() const ;
+    void setFileSource( const QString& fileSource ) ;
+    const QString& getFileCodec() const ;
+    void setFileCodec( const QString& fileCodec ) ;
     int getCount() const ;
     void setCount( int count ) ;
 

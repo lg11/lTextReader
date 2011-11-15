@@ -2,7 +2,8 @@ import QtQuick 1.1
 
 ListView {
     id : textView
-    property alias filePath : textViewModel.filePath
+    /*property alias filePath : textViewModel.filePath*/
+    property alias fileSource : textViewModel.fileSource
     /*property alias fileCodec : textViewModel.fileCodec*/
     property alias count : textViewModel.count
     TextViewModel {
