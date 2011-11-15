@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=0.1
+Name=lTextReader
+GenericName=lTextReader
+Comment=lTextReader
+Exec=/usr/bin/single-instance /usr/bin/ltextreader
+Terminal=false
+Type=Application
+#Icon=ltextreader

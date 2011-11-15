@@ -1,5 +1,5 @@
 TEMPLATE = lib
-TARGET = textview
+TARGET = ltextreaderplugin
 QT += declarative
 CONFIG += qt plugin
 
@@ -39,5 +39,5 @@ symbian {
     installPath = /usr/lib/qt4/imports/$$replace(uri, \\., /)
     qmldir.path = $$installPath
     target.path = $$installPath
-    INSTALLS += target qmldir
+    ;INSTALLS += target qmldir
 }
