@@ -15,9 +15,7 @@ Page {
     TextViewSlider {
         id : textViewSlider
         listView : textView
-        anchors.verticalCenter : parent.verticalCenter
-        anchors.right : parent.right
-        height : parent.height - 50
+        anchors.fill : parent
     }
     /*FileView {*/
         /*anchors.centerIn : parent*/

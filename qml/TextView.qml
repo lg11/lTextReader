@@ -19,4 +19,9 @@ ListView {
     }
     model : textViewModel
     delegate : textViewDelegate
+
+    function calcIndex( x, y ) {
+        var pos = mapToItem( contentItem, x, y )
+        return indexAt( pos.x, pos.y )
+    }
 }
