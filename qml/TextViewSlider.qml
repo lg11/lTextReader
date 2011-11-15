@@ -9,7 +9,7 @@ Slider {
     maximumValue : 1.0
     inverted : true
     orientation : Qt.Vertical
-    valueIndicatorVisible : true
+    /*valueIndicatorVisible : true*/
     /*valueIndicatorMargin : 50*/
     onValueChanged : {
         if ( value <= 0.0 )
@@ -35,24 +35,24 @@ Slider {
         }
     ]
 
-    function formatValue( v ) {
-        var str = ""
-        if ( listView && listView.count > 0 ) {
-            var index = parseInt( listView.count * v / maximumValue )
-            if ( listView.model.lineAt ) {
-                var line = listView.model.lineAt( index )
-                if ( line.length < 1 && index > 0 ) 
-                    line = listView.model.lineAt( index - 1 )
-                if ( line.length > 0 ) {
-                    if ( line.length > 20 )
-                        str += line.slice( 0, 20 ) + "......"
-                    else
-                        str += line
-                        str += " : "
-                }
-            }
-            str += index
-        }
-        return str
-    }
+    /*function formatValue( v ) {*/
+        /*var str = ""*/
+        /*if ( listView && listView.count > 0 ) {*/
+            /*var index = parseInt( listView.count * v / maximumValue )*/
+            /*if ( listView.model.lineAt ) {*/
+                /*var line = listView.model.lineAt( index )*/
+                /*if ( line.length < 1 && index > 0 ) */
+                    /*line = listView.model.lineAt( index - 1 )*/
+                /*if ( line.length > 0 ) {*/
+                    /*if ( line.length > 20 )*/
+                        /*str += line.slice( 0, 20 ) + "......"*/
+                    /*else*/
+                        /*str += line*/
+                        /*str += " : "*/
+                /*}*/
+            /*}*/
+            /*str += index*/
+        /*}*/
+        /*return str*/
+    /*}*/
 }
