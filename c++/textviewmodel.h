@@ -17,7 +17,7 @@ signals :
     void countChanged( int count ) ;
     void itemsChanged() ;
 
-public:
+public :
     enum ViewRoles {
         ContentRole = Qt::UserRole + 1
     } ;
@@ -33,6 +33,10 @@ public:
     void setFileCodec( const QString& fileCodec ) ;
     int getCount() const ;
     void setCount( int count ) ;
+
+public slots :
+    QString lineAt( int index ) const ;
+
 private :
     Q_DISABLE_COPY( TextViewModel ) ;
     Q_DECLARE_PRIVATE( TextViewModel ) ;

@@ -118,3 +118,11 @@ void TextViewModel::setCount( int count ) {
     }
 }
 
+QString TextViewModel::lineAt( int index ) const {
+    Q_D( const TextViewModel ) ;
+    if ( index >= 0 && index < d->count )
+        return d->list.at( index ).trimmed() ;
+    else
+        return "" ;
+}
+
