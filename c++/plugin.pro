@@ -6,16 +6,17 @@ CONFIG += qt plugin
 TARGET = $$qtLibraryTarget($$TARGET)
 uri = me.utils.textmodel
 
+LIBS += `icu-config --ldflags`
+
 # Input
 SOURCES += \
     plugin.cpp \
     textviewmodel.cpp \
-    fileviewmodel.cpp
 
 HEADERS += \
     plugin.h \
     textviewmodel.h \
-    fileviewmodel.h
+    icu.h
 
 OTHER_FILES = 
 

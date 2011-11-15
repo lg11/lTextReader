@@ -2,10 +2,7 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 
 Page {
-    Rectangle {
-        anchors.fill : parent
-        color : "white"
-    }
+    clip : true
     TextView { 
         id : textView
         anchors.centerIn : parent
@@ -23,8 +20,13 @@ Page {
         /*width : parent.width - 20*/
     /*}*/
     
-    Component.onCompleted : {
-        textView.fileCodec = "gb18030"
-        textView.filePath = "/home/l11/downloads/《步步惊心》完结.txt"
+    function setFilePath( filePath ) {
+        textView.filePath = filePath
+    }
+    /*function setFileCodec( fileCodec ) {*/
+        /*textView.fileCodec = fileCodec*/
+    /*}*/
+    function reset() {
+        textView.positionViewAtBeginning()
     }
 }

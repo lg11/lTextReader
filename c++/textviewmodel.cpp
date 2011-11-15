@@ -1,4 +1,5 @@
 #include "textviewmodel.h"
+#include "icu.h"
 
 #include <QStringList>
 #include <QHash>
@@ -6,31 +7,38 @@
 #include <QFile>
 #include <QTextStream>
 
-//#include <QDebug>
+#include <QDebug>
 
 class TextViewModelPrivate {
 public :
     QStringList list ;
     QString filePath ;
-    QString fileCodec ;
     int count ;
     TextViewModelPrivate() :
         list(),
         filePath(),
-        fileCodec( "utf-8" ),
         count( 0 )
     {
     }
     ~TextViewModelPrivate() {}
     void loadFile() {
+        //qDebug() << "load start" ;
         this->list.clear() ;
         QFile file( this->filePath ) ;
         if ( file.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
+            char buffer[1024] ;
+            int count ;
+            count = file.read( buffer, 1024 ) ;
+            QString codec = detectCodec( buffer, count ) ;
+            qDebug() << codec ;
+
+            file.seek( 0 ) ;
             QTextStream in( &file ) ;
-            in.setCodec( this->fileCodec.toLatin1() ) ;
+            in.setCodec( codec.toLatin1() ) ;
             while( !in.atEnd() )
                 this->list.append( in.readLine() ) ;
         }
+        //qDebug() << "load finished" ;
     }
 } ;
 
@@ -79,31 +87,37 @@ const QString& TextViewModel::getFilePath() const {
 void TextViewModel::setFilePath( const QString& filePath ) {
     Q_D( TextViewModel ) ;
     if ( d->filePath != filePath ) {
+        //this->reset() ;
         d->filePath = filePath ;
         emit this->filePathChanged( d->filePath ) ;
         d->loadFile() ;
         this->setCount( d->list.length() ) ;
-        emit itemsChanged() ;
+        QModelIndex startIndex( this->index( 0, 0, QModelIndex() ) ) ;
+        QModelIndex endIndex( this->index( d->count - 1, 0, QModelIndex() ) ) ;
+        emit this->dataChanged( startIndex, endIndex ) ;
+        //emit itemsChanged() ;
     }
 }
 
-const QString& TextViewModel::getFileCodec() const {
-    Q_D( const TextViewModel ) ;
-    return d->fileCodec ;
-}
+//const QString& TextViewModel::getFileCodec() const {
+    //Q_D( const TextViewModel ) ;
+    //return d->fileCodec ;
+//}
 
-void TextViewModel::setFileCodec( const QString& fileCodec ) {
-    Q_D( TextViewModel ) ;
-    if ( fileCodec == "utf-8" || fileCodec == "gb18030" ) {
-        if ( d->fileCodec != fileCodec ) {
-            d->fileCodec = fileCodec ;
-            emit this->fileCodecChanged( d->fileCodec ) ;
-            d->loadFile() ;
-            this->setCount( d->list.length() ) ;
-            emit itemsChanged() ;
-        }
-    }
-}
+//void TextViewModel::setFileCodec( const QString& fileCodec ) {
+    //Q_D( TextViewModel ) ;
+    //if ( fileCodec == "utf-8" || fileCodec == "gb18030" ) {
+        //if ( d->fileCodec != fileCodec ) {
+            //d->fileCodec = fileCodec ;
+            //emit this->fileCodecChanged( d->fileCodec ) ;
+            //d->loadFile() ;
+            //this->setCount( d->list.length() ) ;
+            //QModelIndex startIndex( this->index( 0, 0, QModelIndex() ) ) ;
+            //QModelIndex endIndex( this->index( d->count - 1, 0, QModelIndex() ) ) ;
+            //emit this->dataChanged( startIndex, endIndex ) ;
+        //}
+    //}
+//}
 
 int TextViewModel::getCount() const {
     Q_D( const TextViewModel ) ;

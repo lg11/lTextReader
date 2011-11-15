@@ -1,0 +1,46 @@
+import QtQuick 1.1
+import QtMobility.gallery 1.1
+
+ListView {
+    id : documentView
+    DocumentGalleryModel {
+        id : documentViewModel
+        rootType : DocumentGallery.Text
+        properties : [ "fileName", "filePath" ]
+    }
+    Component {
+        id : documentViewDelegate
+        Rectangle {
+            id : documentViewModelRectangle
+            height : documentViewDelegateText.paintedHeight
+            width : parent.width
+            color : "transparent"
+            Text {
+                id : documentViewDelegateText
+                text : fileName
+                anchors.centerIn : parent
+                width : parent.width
+                font.pixelSize : 26
+            }
+            MouseArea {
+                id : documentViewDelegateMouseArea
+                anchors.fill : parent
+                onReleased : {
+                    /*console.log( "released" )*/
+                    textViewPage.reset()
+                    textViewPage.setFilePath( filePath )
+                    window.goToTextViewPage()
+                }
+            }
+            states : [
+                State {
+                    name : "DOWN"
+                    when : documentViewDelegateMouseArea.pressed
+                    PropertyChanges { target : documentViewModelRectangle ; color : "#AA4444FF" }
+                }
+            ]
+        }
+    }
+    model : documentViewModel
+    delegate : documentViewDelegate
+}
