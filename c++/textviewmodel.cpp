@@ -1,4 +1,4 @@
-#include "model.h"
+#include "textviewmodel.h"
 
 #include <QStringList>
 #include <QHash>
@@ -6,12 +6,21 @@
 #include <QFile>
 #include <QTextStream>
 
+//#include <QDebug>
+
 class TextViewModelPrivate {
 public :
     QStringList list ;
     QString filePath ;
     QString fileCodec ;
-    TextViewModelPrivate() : list(), filePath(), fileCodec( "utf-8" ) {}
+    int count ;
+    TextViewModelPrivate() :
+        list(),
+        filePath(),
+        fileCodec( "utf-8" ),
+        count( 0 )
+    {
+    }
     ~TextViewModelPrivate() {}
     void loadFile() {
         this->list.clear() ;
@@ -42,7 +51,7 @@ TextViewModel::~TextViewModel() {
 int TextViewModel::rowCount( const QModelIndex& parent ) const {
     Q_UNUSED( parent ) ;
     Q_D( const TextViewModel ) ;
-    return d->list.length() ;
+    return d->count ;
 }
 
 QVariant TextViewModel::data( const QModelIndex& index, int role ) const {
@@ -53,6 +62,7 @@ QVariant TextViewModel::data( const QModelIndex& index, int role ) const {
     if ( index.row() < 0 || index.row() > d->list.length() )
         return QVariant() ;
 
+    //qDebug() << "data" << index.row() << role ;
     if ( role == ContentRole )
         return d->list.at( index.row() ) ;
     else if ( role == Qt::DisplayRole )
@@ -70,8 +80,10 @@ void TextViewModel::setFilePath( const QString& filePath ) {
     Q_D( TextViewModel ) ;
     if ( d->filePath != filePath ) {
         d->filePath = filePath ;
-        d->loadFile() ;
         emit this->filePathChanged( d->filePath ) ;
+        d->loadFile() ;
+        this->setCount( d->list.length() ) ;
+        emit itemsChanged() ;
     }
 }
 
@@ -85,8 +97,24 @@ void TextViewModel::setFileCodec( const QString& fileCodec ) {
     if ( fileCodec == "utf-8" || fileCodec == "gb18030" ) {
         if ( d->fileCodec != fileCodec ) {
             d->fileCodec = fileCodec ;
-            d->loadFile() ;
             emit this->fileCodecChanged( d->fileCodec ) ;
+            d->loadFile() ;
+            this->setCount( d->list.length() ) ;
+            emit itemsChanged() ;
         }
     }
 }
+
+int TextViewModel::getCount() const {
+    Q_D( const TextViewModel ) ;
+    return d->count ;
+}
+
+void TextViewModel::setCount( int count ) {
+    Q_D( TextViewModel ) ;
+    if ( d->count != count ) {
+        d->count = count ;
+        emit this->countChanged( d->count ) ;
+    }
+}
+

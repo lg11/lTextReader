@@ -9,11 +9,13 @@ uri = me.utils.textmodel
 # Input
 SOURCES += \
     plugin.cpp \
-    model.cpp
+    textviewmodel.cpp \
+    fileviewmodel.cpp
 
 HEADERS += \
     plugin.h \
-    model.h
+    textviewmodel.h \
+    fileviewmodel.h
 
 OTHER_FILES = 
 

@@ -1,11 +1,22 @@
 import QtQuick 1.1
 
 ListView {
+    id : textView
+    property alias filePath : textViewModel.filePath
+    property alias fileCodec : textViewModel.fileCodec
+    property alias count : textViewModel.count
     TextViewModel {
         id : textViewModel
-        filePath : "/home/l11/downloads/《步步惊心》完结.txt"
-        fileCodec : "gb18030"
+    }
+    Component {
+        id : textViewDelegate
+        Text {
+            text : content
+            wrapMode : Text.Wrap
+            width : parent.width
+            font.pixelSize : 26
+        }
     }
     model : textViewModel
-    delegate : Text { text : content ; wrapMode : Text.Wrap ; width : parent.width }
+    delegate : textViewDelegate
 }

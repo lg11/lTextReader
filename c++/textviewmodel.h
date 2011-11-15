@@ -1,5 +1,5 @@
-#ifndef MODEL_H
-#define MODEL_H
+#ifndef TEXTVIEWMODEL_H
+#define TEXTVIEWMODEL_H
 
 #include <QAbstractListModel>
 
@@ -9,10 +9,13 @@ class TextViewModel : public QAbstractListModel {
     Q_OBJECT
     Q_PROPERTY( QString filePath READ getFilePath WRITE setFilePath NOTIFY filePathChanged ) 
     Q_PROPERTY( QString fileCodec READ getFileCodec WRITE setFileCodec NOTIFY fileCodecChanged ) 
+    Q_PROPERTY( int count READ getCount NOTIFY countChanged )
 
 signals :
     void filePathChanged( const QString& filePath ) ;
     void fileCodecChanged( const QString& fileCodec ) ;
+    void countChanged( int count ) ;
+    void itemsChanged() ;
 
 public:
     enum ViewRoles {
@@ -28,6 +31,8 @@ public:
     void setFilePath( const QString& filePath ) ;
     const QString& getFileCodec() const ;
     void setFileCodec( const QString& fileCodec ) ;
+    int getCount() const ;
+    void setCount( int count ) ;
 private :
     Q_DISABLE_COPY( TextViewModel ) ;
     Q_DECLARE_PRIVATE( TextViewModel ) ;
@@ -36,5 +41,5 @@ private :
 
 //QML_DECLARE_TYPE( TextViewModel )
 
-#endif // MODEL_H
+#endif // TEXTVIEWMODEL_H
 
