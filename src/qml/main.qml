@@ -42,5 +42,6 @@ PageStackWindow {
         pageStack.push( textViewPage )
         showDocumentViewPage = false
     }
+
 }
 

@@ -7,19 +7,23 @@ ListView {
         id : documentViewModel
         rootType : DocumentGallery.Text
         properties : [ "url", "fileName" ]
+        filter : GalleryWildcardFilter {
+            property : "url"
+            value : "file:///home/*.txt"
+        }
     }
     Component {
         id : documentViewDelegate
         Rectangle {
             id : documentViewModelRectangle
-            height : documentViewDelegateText.paintedHeight
             width : parent.width
+            height : documentViewDelegateText.paintedHeight + 20
             color : "transparent"
             Text {
                 id : documentViewDelegateText
                 text : fileName
                 anchors.centerIn : parent
-                width : parent.width
+                width : parent.width - 30
                 font.pixelSize : 26
             }
             MouseArea {
