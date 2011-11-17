@@ -13,10 +13,10 @@ Item {
         anchors.verticalCenter : parent.verticalCenter
         height : parent.height
         width : screen.rotation > 0 ? 100 : 150
-        Rectangle {
-            anchors.fill : parent
-            color : "#66FF0000"
-        }
+        /*Rectangle {*/
+            /*anchors.fill : parent*/
+            /*color : "#66FF0000"*/
+        /*}*/
         function calcIndex( dy ) {
             var scale = parseInt ( dy / ( height * 0.85 ) * listView.count )
             var index =  internal.seekStartIndex + scale

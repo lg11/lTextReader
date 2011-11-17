@@ -42,6 +42,7 @@ public :
             in.setCodec( codec.toLatin1() ) ;
             while( !in.atEnd() )
                 this->list.append( in.readLine() ) ;
+            file.close() ;
         }
         //qDebug() << "load finished" ;
         return codec ;

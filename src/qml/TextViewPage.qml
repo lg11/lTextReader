@@ -8,7 +8,7 @@ Page {
     TextView { 
         id : textView
         anchors.centerIn : parent
-        height : parent.height
+        height : parent.height 
         width : parent.width
     }
     Rectangle {
@@ -22,9 +22,21 @@ Page {
         visible : false
         opacity : 0.0
     }
+    MouseArea {
+        anchors.centerIn : parent
+        height : parent.height
+        width : parent.width / 3
+        onPressed : {
+            textView.state = "SEEKING"
+            /*textView.remapMaskRect()*/
+        }
+        onReleased : {
+            textView.state = "SHOW"
+        }
+    }
     TextViewSlider {
         id : textViewSlider
-        listView : textView
+        listView : textView.listView
         anchors.fill : parent
     }
     
@@ -32,7 +44,7 @@ Page {
         textView.fileSource = fileSource
     }
     function reset() {
-        textView.positionViewAtBeginning()
+        /*textView.positionViewAtBeginning()*/
     }
 
     states : [
