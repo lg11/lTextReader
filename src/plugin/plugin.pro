@@ -12,11 +12,15 @@ LIBS += `icu-config --ldflags`
 SOURCES += \
     plugin.cpp \
     textviewmodel.cpp \
+    maskeffect.cpp \
+    maskableitem.cpp \
 
 HEADERS += \
     plugin.h \
+    icu.h \
     textviewmodel.h \
-    icu.h
+    maskeffect.h \
+    maskableitem.h \
 
 OTHER_FILES = 
 

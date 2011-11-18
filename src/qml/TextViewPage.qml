@@ -5,8 +5,15 @@ Page {
     id : textViewPage
     clip : true
 
+    Rectangle {
+        anchors.fill : parent
+        color : "#AA808080"
+    }
+    TextViewModel { id : textViewModel }
+
     TextView { 
         id : textView
+        model : textViewModel
         anchors.centerIn : parent
         height : parent.height 
         width : parent.width
@@ -28,7 +35,6 @@ Page {
         width : parent.width / 3
         onPressed : {
             textView.state = "SEEKING"
-            /*textView.remapMaskRect()*/
         }
         onReleased : {
             textView.state = "SHOW"
@@ -41,10 +47,11 @@ Page {
     }
     
     function setFileSource( fileSource ) {
-        textView.fileSource = fileSource
+        textViewModel.fileSource = fileSource
     }
     function reset() {
         /*textView.positionViewAtBeginning()*/
+        textView.remapMask()
     }
 
     states : [

@@ -39,6 +39,7 @@ PageStackWindow {
         showDocumentViewPage = true
     }
     function goToTextViewPage() {
+        textViewPage.reset()
         pageStack.push( textViewPage )
         showDocumentViewPage = false
     }
