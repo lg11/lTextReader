@@ -4,6 +4,7 @@ MaskableItem {
     id : root
     property alias model : listView.model
     property color textColor : "black"
+    property color maskColor : "transparent"
     property Item listView : listView
     property real maskOffset : 0
     property real maskTop : maskRect.y - maskTopRect.height
@@ -42,7 +43,7 @@ MaskableItem {
             anchors.bottom : parent.top
             transformOrigin : Item.Bottom
             height : maskOffset
-            color : "#AAFF4444"
+            color : maskColor
         }
         Rectangle {
             id : maskBottomRect
@@ -51,7 +52,7 @@ MaskableItem {
             anchors.top : parent.top
             transformOrigin : Item.Top
             height : root.height - maskOffset
-            color : "#AAFF4444"
+            color : maskColor
         }
     }
     ListView {
@@ -67,14 +68,14 @@ MaskableItem {
             StateChangeScript { 
                 script : { remapMask() }
             }
-            PropertyChanges { target : root ; textColor : "black" }
         } ,
         State {
             name : "SEEKING"
             StateChangeScript { 
                 script : { remapMask() }
             }
-            PropertyChanges { target : root ; textColor : "white" }
+            /*PropertyChanges { target : root ; textColor : "white" }*/
+            PropertyChanges { target : root ; maskColor : "#BBFFFFFF" }
             PropertyChanges { target : maskTopRect ; height : maskHeight / 2 }
             PropertyChanges { target : maskBottomRect ; height : maskHeight / 2 }
         }
@@ -85,9 +86,9 @@ MaskableItem {
             to : "SEEKING"
             reversible : true
             ParallelAnimation {
-                NumberAnimation { target : maskTopRect ; property : "height" ; from : maskOffset ; duration : 180 }
-                NumberAnimation { target : maskBottomRect ; property : "height" ; from : root.height - maskOffset ; duration : 180 }
-                ColorAnimation { target : root ; property : "textColor" ; from : "#AA888888" ; duration : 180 }
+                NumberAnimation { target : maskTopRect ; property : "height" ; duration : 180 }
+                NumberAnimation { target : maskBottomRect ; property : "height" ; duration : 180 }
+                ColorAnimation { target : root ; properties : "maskColor" ; duration : 180 }
             }
         }
     ]
@@ -96,7 +97,43 @@ MaskableItem {
         var pos = listView.mapToItem( listView.contentItem, 0, 0 )
         return listView.indexAt( pos.x, pos.y )
     }
+    function centerIndex() {
+        var pos = listView.mapToItem( listView.contentItem, 0, listView.height / 2 )
+        return listView.indexAt( pos.x, pos.y )
+    }
     function remapMask() {
         maskOffset = maskHeight / 2 + topIndex() / model.count * ( root.height - maskHeight )
+    }
+
+    function startSeek() {
+        remapMask()
+        state = "SEEKING"
+    }
+    function seek( index ) {
+        listView.positionViewAtIndex( index, ListView.Beginning )
+        remapMask()
+    }
+    function seeked( index ) {
+        remapMask()
+        state = "SHOW"
+    }
+
+    function sync( target ) {
+        var index = target.topIndex()
+        /*console.log( "sync start" )*/
+        var oldContentY = target.listView.contentY
+        /*console.log( target.listView.contentHeight, target.listView.contentY, listView.contentHeight, listView.contentY )*/
+        
+        target.listView.positionViewAtIndex( index, ListView.Beginning )
+        var newContentY = target.listView.contentY
+        /*console.log( target.listView.contentHeight, target.listView.contentY, listView.contentHeight, listView.contentY )*/
+
+        var dy = newContentY - oldContentY
+        /*console.log( dy )*/
+        target.listView.contentY = target.listView.contentY - dy
+
+        listView.positionViewAtIndex( index, ListView.Beginning )
+        listView.contentY = listView.contentY - dy
+        /*console.log( "sync end" )*/
     }
 }
