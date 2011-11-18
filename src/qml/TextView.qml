@@ -6,6 +6,9 @@ MaskableItem {
     property color textColor : "black"
     property Item listView : listView
     property real maskOffset : 0
+    property real maskTop : maskRect.y - maskTopRect.height
+    property real maskBottom : maskRect.y + maskBottomRect.height
+    property real maskHeight : root.height / 2.25
     state : "SHOW"
 
     Component {
@@ -25,14 +28,31 @@ MaskableItem {
         }
     }
 
-    Rectangle {
+    Item {
         id : maskRect
-        anchors.centerIn : parent
-        anchors.verticalCenterOffset : maskOffset
-        height : maskOffset > 0 ? root.height + maskOffset * 2 : root.height - maskOffset * 2
-        width : root.width
-        transformOrigin : Item.Center
-        color : "#AA444444"
+        anchors.horizontalCenter : parent.horizontalCenter
+        height : 1
+        width : parent.width 
+        y : maskOffset
+        /*Behavior on y { SmoothedAnimation { velocity : 500 } }*/
+        Rectangle {
+            id : maskTopRect
+            anchors.horizontalCenter : parent.horizontalCenter
+            width : parent.width
+            anchors.bottom : parent.top
+            transformOrigin : Item.Bottom
+            height : maskOffset
+            color : "#AAFF4444"
+        }
+        Rectangle {
+            id : maskBottomRect
+            anchors.horizontalCenter : parent.horizontalCenter
+            width : parent.width
+            anchors.top : parent.top
+            transformOrigin : Item.Top
+            height : root.height - maskOffset
+            color : "#AAFF4444"
+        }
     }
     ListView {
         id : listView
@@ -40,8 +60,6 @@ MaskableItem {
         anchors.fill : parent
         delegate : delegate
     }
-
-    mask : maskRect
 
     states : [
         State {
@@ -57,7 +75,8 @@ MaskableItem {
                 script : { remapMask() }
             }
             PropertyChanges { target : root ; textColor : "white" }
-            PropertyChanges { target : maskRect ; height : root.height / 2 }
+            PropertyChanges { target : maskTopRect ; height : maskHeight / 2 }
+            PropertyChanges { target : maskBottomRect ; height : maskHeight / 2 }
         }
     ]
 
@@ -66,8 +85,9 @@ MaskableItem {
             to : "SEEKING"
             reversible : true
             ParallelAnimation {
-                NumberAnimation { target : maskRect ; property : "height" ; duration : 800 }
-                ColorAnimation { target : root ; property : "textColor" ; duration : 800 }
+                NumberAnimation { target : maskTopRect ; property : "height" ; from : maskOffset ; duration : 180 }
+                NumberAnimation { target : maskBottomRect ; property : "height" ; from : root.height - maskOffset ; duration : 180 }
+                ColorAnimation { target : root ; property : "textColor" ; from : "#AA888888" ; duration : 180 }
             }
         }
     ]
@@ -77,7 +97,6 @@ MaskableItem {
         return listView.indexAt( pos.x, pos.y )
     }
     function remapMask() {
-        maskOffset = topIndex() / model.count * root.height
-        maskOffset = ( maskOffset - root.height / 2 ) / 2
+        maskOffset = maskHeight / 2 + topIndex() / model.count * ( root.height - maskHeight )
     }
 }

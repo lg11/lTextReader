@@ -34,6 +34,7 @@ Page {
         height : parent.height
         width : parent.width / 3
         onPressed : {
+            textView.remapMask()
             textView.state = "SEEKING"
         }
         onReleased : {
@@ -51,6 +52,7 @@ Page {
     }
     function reset() {
         /*textView.positionViewAtBeginning()*/
+        textView.activeEffect()
         textView.remapMask()
     }
 

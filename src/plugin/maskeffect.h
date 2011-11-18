@@ -13,7 +13,7 @@ class MaskEffect : public QGraphicsEffect {
 public :
     explicit MaskEffect( QObject* parent = 0 ) ;
     ~MaskEffect() ;
-    void setMask( QDeclarativeItem* mask ) ;
+    void setTarget( QDeclarativeItem* target ) ;
 protected :
     void draw( QPainter* painter ) ;
 private :

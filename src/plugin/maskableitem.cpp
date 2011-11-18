@@ -3,15 +3,9 @@
 
 class MaskableItemPrivate {
 public :
-    QDeclarativeItem* mask ;
     MaskEffect* effect ;
-    MaskableItemPrivate() : 
-        mask( 0 ) ,
-        effect( new MaskEffect )
-    {
-    }
-    ~MaskableItemPrivate() {
-    }
+    MaskableItemPrivate() : effect( new MaskEffect ) {}
+    ~MaskableItemPrivate() { delete this->effect ; }
 } ;
 
 MaskableItem::MaskableItem( QDeclarativeItem* parent ) : \
@@ -23,26 +17,15 @@ MaskableItem::MaskableItem( QDeclarativeItem* parent ) : \
     
     Q_D( MaskableItem ) ;
     this->setGraphicsEffect( d->effect ) ;
+    d->effect->setTarget( this ) ;
 }
 
 MaskableItem::~MaskableItem() {
     delete this->d_ptr ;
 }
 
-QDeclarativeItem* MaskableItem::getMask() const {
-    Q_D( const MaskableItem ) ;
-    return d->mask ;
-}
-
-void MaskableItem::setMask( QDeclarativeItem* mask ) {
+void MaskableItem::activeEffect() {
     Q_D( MaskableItem ) ;
-    if ( d->mask != mask ) {
-        d->mask = mask ;
-        emit this->maskChanged( d->mask ) ;
-        if ( d->mask )
-            d->effect->setMask( d->mask ) ;
-        else
-            d->effect->setMask( 0 ) ;
-    }
+    d->effect->setTarget( this ) ;
 }
 
